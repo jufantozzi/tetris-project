@@ -5,6 +5,7 @@
  */
 package game;
 import States.GameState;
+import States.State;
 import java.awt.Canvas;
 import java.awt.Dimension;
 import javax.swing.JFrame;
@@ -39,8 +40,8 @@ public class Screen extends javax.swing.JFrame{
         
     }
     
-    public void setListener(GameState game){
-        screen.addKeyListener(game);
+    public void setListener(State state){
+        screen.addKeyListener(state);
     }
     
     public Canvas getCanvas(){

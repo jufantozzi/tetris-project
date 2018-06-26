@@ -6,12 +6,14 @@
 package States;
 
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 /**
  *
  * @author ju
  */
-public abstract class State {
+public abstract class State implements KeyListener{
     
     private static State currentState = null;
     
@@ -26,5 +28,14 @@ public abstract class State {
     public abstract void tick();
     
     public abstract void render(Graphics g);
+
+    @Override
+    public abstract void keyTyped(KeyEvent e);
+
+    @Override
+    public abstract void keyPressed(KeyEvent e);
+
+    @Override
+    public abstract void keyReleased(KeyEvent e);
 
 }

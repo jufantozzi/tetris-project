@@ -29,7 +29,7 @@ import java.util.Random;
  *
  * @author ju
  */
-public class GameState extends State implements KeyListener{
+public class GameState extends State{
 
     private boolean pauseOption, isPaused;
     private int ticks, gameSpeed;
@@ -49,7 +49,7 @@ public class GameState extends State implements KeyListener{
     @Override
     public void tick() {
         if(!isPaused){
-            ticks++;
+            ticks++;   //gameSpeed >= 60 means it will run 1 time per sec
             if(ticks/gameSpeed >= 60){                              //game speed. As gameSpeed grows, game gets faster
                 if(!curPiece.moveDown(curPiece)){                   //if cannot move piece down, draw it on the map
                     map1.drawOnMap(curPiece);                       //generate a new piece
