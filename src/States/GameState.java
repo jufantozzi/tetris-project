@@ -31,7 +31,7 @@ import java.util.Random;
  */
 public class GameState extends State implements KeyListener{
 
-    
+    private boolean pauseOption, isPaused;
     private int ticks, gameSpeed;
     public final ArrayList<Element> pieceArray = new ArrayList();
     public Element curPiece;
@@ -42,18 +42,22 @@ public class GameState extends State implements KeyListener{
         ticks = 0;
         this.curPiece = this.getRandPiece(rand.nextInt(7));
         this.gameSpeed = 1;
+        this.pauseOption = false;
+        this.isPaused = false;
     }
     
     @Override
     public void tick() {
-        ticks++;
-        if(ticks/gameSpeed >= 60){                              //game speed. As gameSpeed grows, game gets faster
-            if(!curPiece.moveDown(curPiece)){                   //if cannot move piece down, draw it on the map
-                map1.drawOnMap(curPiece);                       //generate a new piece
-                map1.checkLineCompletion();
-                curPiece = this.getRandPiece(rand.nextInt(7)); 
+        if(!isPaused){
+            ticks++;
+            if(ticks/gameSpeed >= 60){                              //game speed. As gameSpeed grows, game gets faster
+                if(!curPiece.moveDown(curPiece)){                   //if cannot move piece down, draw it on the map
+                    map1.drawOnMap(curPiece);                       //generate a new piece
+                    map1.checkLineCompletion();
+                    curPiece = this.getRandPiece(rand.nextInt(7)); 
+                }
+                ticks = 0;
             }
-            ticks = 0;
         }
     }
 
@@ -66,6 +70,18 @@ public class GameState extends State implements KeyListener{
         map1.drawMap(g);
         curPiece.drawThis(g); //desenha peça na tela
         
+        if(isPaused){
+            this.drawPauseScreen(g);
+        }
+    }
+    
+    private void drawPauseScreen(Graphics g){
+        if(!pauseOption){
+            g.drawImage(Assets.pauseScreenR, 200, 250, 200, 200, null);
+        }
+        else{
+            g.drawImage(Assets.pauseScreenQ, 200, 250, 200, 200, null);
+        }
     }
     
     private void drawBackScreen(Graphics g){
@@ -123,27 +139,57 @@ public class GameState extends State implements KeyListener{
         }
     }
     
+    
+    
     @Override
     public void keyPressed(KeyEvent e) {
-        switch (e.getKeyCode()) {
-            case KeyEvent.VK_UP:
-                //curPiece.rotate(curPiece);
-                break;
-                
-            case KeyEvent.VK_DOWN:
-                curPiece.moveDown(curPiece);
-                break;
-            
-            case KeyEvent.VK_LEFT:
-                curPiece.moveLeft(curPiece);
-                break;
-            
-            case KeyEvent.VK_RIGHT:
-                curPiece.moveRight(curPiece);
-                break;
-            
-            default:
-                break;
+        if(!isPaused){
+            switch (e.getKeyCode()) {
+                case KeyEvent.VK_UP:
+                    //curPiece.rotate(curPiece);
+                    break;
+                case KeyEvent.VK_DOWN:
+                    curPiece.moveDown(curPiece);
+                    break;
+                case KeyEvent.VK_LEFT:
+                    curPiece.moveLeft(curPiece);
+                    break;
+                case KeyEvent.VK_RIGHT:
+                    curPiece.moveRight(curPiece);
+                    break;  
+                case KeyEvent.VK_ESCAPE:
+                    isPaused = true;
+                    break;
+                default:
+                    break;
+            }
+        }
+        else{
+            switch (e.getKeyCode()) {
+                case KeyEvent.VK_UP:
+                    this.pauseOption = !this.pauseOption;
+                    break;
+                case KeyEvent.VK_DOWN:
+                    this.pauseOption = !this.pauseOption;
+                    break;
+                case KeyEvent.VK_ENTER:
+                    if(pauseOption) {
+                        
+                    }
+                    else{
+                        this.isPaused = false;
+                    } 
+                        
+                    break;      
+                case KeyEvent.VK_ESCAPE:
+                    isPaused = false;
+                    break;
+                case KeyEvent.VK_Q:
+                    isPaused = false;
+                    break;
+                default:
+                    break;
+            }
         }
     }
     

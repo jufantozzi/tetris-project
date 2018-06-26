@@ -67,7 +67,7 @@ public class Game implements Runnable{
     private void init(){
         screen = new Screen(title, width, height);
 
-        state = new GameState(this.screen);
+        state = new GameState(this.screen);        
 
         screen.setListener((GameState)state);
 
@@ -83,7 +83,7 @@ public class Game implements Runnable{
         double delta = 0;
         long now;
         long lastCheck = System.nanoTime();
-        long timer = 0;
+        long timer = 0; //
         
         init();
         while(running){

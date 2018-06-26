@@ -13,7 +13,8 @@ import java.awt.image.BufferedImage;
  * @author ju
  */
 public class Assets {
-    public static BufferedImage backgroundPiece, pieceI, pieceJ, pieceL, pieceO, pieceS, pieceT, pieceZ, topScreen;
+    public static BufferedImage backgroundPiece, pieceI,pieceJ, pieceL, pieceO, 
+            pieceS, pieceT, pieceZ, topScreen, pauseScreenQ, pauseScreenR;
     
     
     public static void init(){
@@ -26,6 +27,8 @@ public class Assets {
         pieceT = ImageLoader.loadImage("/pieceT.png");
         pieceZ = ImageLoader.loadImage("/pieceZ.png");
         topScreen = ImageLoader.loadImage("/topScreen.png");
+        pauseScreenQ = ImageLoader.loadImage("/pauseScreenQ.png");
+        pauseScreenR = ImageLoader.loadImage("/pauseScreenR.png");
 
     }
 }
