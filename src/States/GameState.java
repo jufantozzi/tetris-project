@@ -117,7 +117,7 @@ public class GameState extends State{
             
             for(int j=0;j<4;j++){
                 
-                if(element.m[i][j]){
+                if(element.m[element.getRotationPos()][i][j]){
                     if(GameMap1.map[i+element.getXPos()][j+element.getYPos()] != 0){
                         return false;
                     }
@@ -147,7 +147,7 @@ public class GameState extends State{
         if(!isPaused){
             switch (e.getKeyCode()) {
                 case KeyEvent.VK_UP:
-                    //curPiece.rotate(curPiece);
+                    curPiece.rotate(curPiece);
                     break;
                 case KeyEvent.VK_DOWN:
                     curPiece.moveDown(curPiece);

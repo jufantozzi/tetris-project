@@ -14,9 +14,10 @@ import java.awt.image.BufferedImage;
 public class Element{
     protected BufferedImage image;
     protected int xPos, yPos, rotationPos;
-    public boolean[][] m = new boolean[4][4];
+    public boolean[][][] m = new boolean[4][4][4];
     
     public Element(){
+        rotationPos = 0;
         this.xPos = 3;
         this.yPos = -1;  //(GUIimg space)
     }
@@ -26,7 +27,7 @@ public class Element{
  
             for(int j=0;j<4;j++){
                 
-                if(m[i][j]){
+                if(m[rotationPos][i][j]){
                 
                     g.drawImage(image, ((i + this.xPos) * Constants.cellSize) + 2, ((j + this.yPos + Constants.downOffset)* Constants.cellSize)+1,
                             Constants.cellSize, Constants.cellSize, null);
@@ -57,7 +58,7 @@ public class Element{
         int maxVal = 0;
         for(int i=0;i<4;i++){
             for(int j=0;j<4;j++){
-                if(m[i][j]){
+                if(m[rotationPos][i][j]){
                     if(j > maxVal)
                     maxVal = j;
                 }
@@ -70,7 +71,7 @@ public class Element{
         int minVal = 0;
         for(int i=0;i<4;i++){
             for(int j=0;j<4;j++){
-                if(m[i][j]){
+                if(m[rotationPos][i][j]){
                     return (i + this.getXPos()+1);
                 }
             }
@@ -82,12 +83,16 @@ public class Element{
         int maxVal = 0;
         for(int i=0;i<4;i++){
             for(int j=0;j<4;j++){
-                if(m[i][j]){
+                if(m[rotationPos][i][j]){
                     maxVal = i;
                 }
             }
         }
         return (maxVal + this.getXPos() - 1);
+    }
+    
+    public int getRotationPos(){
+        return rotationPos;
     }
     
     public boolean moveRight(Element e){
@@ -124,8 +129,8 @@ public class Element{
     }
     
     public void rotate(Element piece){
-        /*if(piece instanceof PieceI){
-        
+        if(piece instanceof PieceI){
+            
         }
         else if(piece instanceof PieceJ){
         
@@ -144,7 +149,7 @@ public class Element{
         }
         else if(piece instanceof PieceZ){
         
-        }*/
+        }
     }
 
 }
