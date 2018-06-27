@@ -83,7 +83,7 @@ public class Game implements Runnable{
         while(running){
             //running at 60 fps
             now = System.nanoTime();
-            delta += (now - lastCheck) / Constants.TimePerTick;
+            delta += (now - lastCheck) / Constants.timePerTick;
             lastCheck = now;
             //if statement runs 60 times per sec
             if(delta>=1){

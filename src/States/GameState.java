@@ -33,19 +33,18 @@ public class GameState extends State{
 
     private boolean pauseOption, isPaused;
     double ticks, gameSpeed;
-    public final ArrayList<Element> pieceArray = new ArrayList();
-    public Element curPiece;
+    public Element curPiece, nextPiece;
     public static GameMap1 map1;
     private final Graphics g;
     Random rand = new Random();
     public static long score;
     
     public GameState(Graphics g){
-        //Screen.getFrame().addKeyListener(this);
         this.g = g;
         map1 = new GameMap1(g);
         ticks = 0;
         this.curPiece = this.getRandPiece(rand.nextInt(7));
+        this.nextPiece = this.getRandPiece(rand.nextInt(7));
         this.gameSpeed = 1;
         this.pauseOption = false;
         this.isPaused = false;
@@ -54,15 +53,15 @@ public class GameState extends State{
     
     @Override
     public void tick() {
-            gameSpeed = 1 + (score / 1000)* 0.3 ;
+            gameSpeed = 1 + (score / 1000)* 0.3;
             if(!isPaused){
             ticks++;   //gameSpeed >= 60 at gameSpeed = 1, means it will run 1 time per sec
             if(ticks*gameSpeed >= 60){                              //As gameSpeed grows, game gets faster
-                System.out.println("gamespeed = "+gameSpeed);
                 if(!curPiece.moveDown(curPiece)){                   //if cannot move piece down, draw it on the map
                     map1.updateMap(curPiece);                       //generate a new piece
                     map1.checkLineCompletion();
-                    curPiece = this.getRandPiece(rand.nextInt(7)); 
+                    curPiece = nextPiece; 
+                    nextPiece = this.getRandPiece(rand.nextInt(7)); 
                 }
                 ticks = 0;
             }
