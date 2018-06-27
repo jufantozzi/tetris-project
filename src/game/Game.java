@@ -8,7 +8,7 @@ package game;
 import States.GameState;
 import States.MenuState;
 import States.State;
-import screens.GameMap1;
+import maps.GameMap1;
 import util.Assets;
 import util.Constants;
 import game.Screen;
@@ -68,6 +68,7 @@ public class Game implements Runnable{
     private void init(){
         screen = new Screen(title, width, height); // criando nova tela
         State.setState(new MenuState(g));//criando novo estado -- estado inicial: menu
+        Screen.getFrame().addKeyListener(State.getState());
         Assets.init();
     }
     
@@ -82,7 +83,7 @@ public class Game implements Runnable{
         while(running){
             //running at 60 fps
             now = System.nanoTime();
-            delta += (now - lastCheck) / Constants.TimePerTick;
+            delta += (now - lastCheck) / Constants.timePerTick;
             lastCheck = now;
             //if statement runs 60 times per sec
             if(delta>=1){

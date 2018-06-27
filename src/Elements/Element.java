@@ -91,6 +91,10 @@ public class Element{
         return (maxVal + this.getXPos() - 1);
     }
     
+    public BufferedImage getImage(){
+        return this.image;
+    }
+    
     public int getRotationPos(){
         return rotationPos;
     }

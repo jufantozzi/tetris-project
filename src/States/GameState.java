@@ -14,12 +14,12 @@ import Elements.PieceO;
 import Elements.PieceS;
 import Elements.PieceT;
 import Elements.PieceZ;
-import screens.GameMap1;
+import maps.GameMap1;
 import util.Assets;
 import util.Constants;
 import game.Screen;
+import java.awt.Font;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Random;
@@ -33,32 +33,35 @@ public class GameState extends State{
 
     private boolean pauseOption, isPaused;
     double ticks, gameSpeed;
-    public final ArrayList<Element> pieceArray = new ArrayList();
-    public Element curPiece;
+    public Element curPiece, nextPiece;
     public static GameMap1 map1;
-    Graphics g;
+    private final Graphics g;
     Random rand = new Random();
-    int x;
+    public static long score;
+    
     public GameState(Graphics g){
-        Screen.getFrame().addKeyListener(this);
         this.g = g;
         map1 = new GameMap1(g);
         ticks = 0;
         this.curPiece = this.getRandPiece(rand.nextInt(7));
+        this.nextPiece = this.getRandPiece(rand.nextInt(7));
         this.gameSpeed = 1;
         this.pauseOption = false;
         this.isPaused = false;
+        score = 0;
     }
     
     @Override
     public void tick() {
+            gameSpeed = 1 + (score / 1000)* 0.3;
             if(!isPaused){
             ticks++;   //gameSpeed >= 60 at gameSpeed = 1, means it will run 1 time per sec
             if(ticks*gameSpeed >= 60){                              //As gameSpeed grows, game gets faster
                 if(!curPiece.moveDown(curPiece)){                   //if cannot move piece down, draw it on the map
                     map1.updateMap(curPiece);                       //generate a new piece
                     map1.checkLineCompletion();
-                    curPiece = this.getRandPiece(rand.nextInt(7)); 
+                    curPiece = nextPiece; 
+                    nextPiece = this.getRandPiece(rand.nextInt(7)); 
                 }
                 ticks = 0;
             }
@@ -68,8 +71,11 @@ public class GameState extends State{
     @Override
     public void render(Graphics g) {
         drawBackScreen(g);
-        map1.drawMap(g);
+        map1.drawMap(g);      //desenha as peças que estão no mapa
         curPiece.drawThis(g); //desenha peça na tela
+        map1.drawNextPiece(nextPiece, g); //desenha proxima peça
+        //desenho do score
+        map1.drawScore(g);
         
         if(isPaused){
             this.drawPauseScreen(g);
@@ -140,8 +146,6 @@ public class GameState extends State{
         }
     }
     
-    
-    
     @Override
     public void keyPressed(KeyEvent e) {
         if(!isPaused){
@@ -177,6 +181,7 @@ public class GameState extends State{
                     if(pauseOption) { //if selecting quit game
                         Screen.removeListener(State.getState());
                         State.setState(new MenuState(g));
+                        Screen.getFrame().addKeyListener(State.getState());
                     }
                     else{//if selecting resume button
                         this.isPaused = false;
