@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package control;
+package screens;
 
 import Elements.Element;
 import Elements.PieceI;
@@ -23,7 +23,7 @@ import util.Constants;
  * @author ju
  */
 public class GameMap1 {
-    public static  int[][] map = new int[10][15]; // primeiro numero: >> <<  / segundo numero: up, down
+    public static  int[][] map = new int[10][18]; // primeiro numero: >> <<  / segundo numero: up, down
     private Graphics g;
     
     public GameMap1(Graphics g) {
@@ -32,42 +32,46 @@ public class GameMap1 {
     
     public void drawMap(Graphics g){
         for(int i=0;i<10;i++){
-            for(int j=0;j<15;j++){
+            for(int j=0;j<18;j++){
                 if(map[i][j] > 0){
-                    if(map[i][j] == Constants.pI){
-                        g.drawImage(Assets.pieceI, ((i) * Constants.cellSize) , ((j+Constants.downOffset)* Constants.cellSize),
-                            Constants.cellSize, Constants.cellSize, null);
-                    }
-                    else if(map[i][j] == Constants.pJ){
-                        g.drawImage(Assets.pieceJ, ((i) * Constants.cellSize), ((j+Constants.downOffset)* Constants.cellSize),
-                            Constants.cellSize, Constants.cellSize, null);
-                    }
-                    else if(map[i][j] == Constants.pL){
-                        g.drawImage(Assets.pieceL, ((i) * Constants.cellSize), ((j+Constants.downOffset)* Constants.cellSize),
-                            Constants.cellSize, Constants.cellSize, null);
-                    }
-                    else if(map[i][j] == Constants.pO){
-                        g.drawImage(Assets.pieceO, ((i) * Constants.cellSize), ((j+Constants.downOffset)* Constants.cellSize),
-                            Constants.cellSize, Constants.cellSize, null);
-                    }
-                    else if(map[i][j] == Constants.pS){
-                        g.drawImage(Assets.pieceS, ((i) * Constants.cellSize), ((j+Constants.downOffset)* Constants.cellSize),
-                            Constants.cellSize, Constants.cellSize, null);
-                    }
-                    else if(map[i][j] == Constants.pT){
-                        g.drawImage(Assets.pieceT, ((i) * Constants.cellSize), ((j+Constants.downOffset)* Constants.cellSize),
-                            Constants.cellSize, Constants.cellSize, null);
-                    }
-                    else if(map[i][j] == Constants.pZ){
-                        g.drawImage(Assets.pieceZ, ((i) * Constants.cellSize), ((j+Constants.downOffset)* Constants.cellSize),
-                            Constants.cellSize, Constants.cellSize, null);
+                    switch (map[i][j]) {
+                        case Constants.pI:
+                            g.drawImage(Assets.pieceI, ((i) * Constants.cellSize) , ((j+Constants.downOffset)* Constants.cellSize),
+                                    Constants.cellSize, Constants.cellSize, null);
+                            break;
+                        case Constants.pJ:
+                            g.drawImage(Assets.pieceJ, ((i) * Constants.cellSize), ((j+Constants.downOffset)* Constants.cellSize),
+                                    Constants.cellSize, Constants.cellSize, null);
+                            break;
+                        case Constants.pL:
+                            g.drawImage(Assets.pieceL, ((i) * Constants.cellSize), ((j+Constants.downOffset)* Constants.cellSize),
+                                    Constants.cellSize, Constants.cellSize, null);
+                            break;
+                        case Constants.pO:
+                            g.drawImage(Assets.pieceO, ((i) * Constants.cellSize), ((j+Constants.downOffset)* Constants.cellSize),
+                                    Constants.cellSize, Constants.cellSize, null);
+                            break;
+                        case Constants.pS:
+                            g.drawImage(Assets.pieceS, ((i) * Constants.cellSize), ((j+Constants.downOffset)* Constants.cellSize),
+                                    Constants.cellSize, Constants.cellSize, null);
+                            break;
+                        case Constants.pT:
+                            g.drawImage(Assets.pieceT, ((i) * Constants.cellSize), ((j+Constants.downOffset)* Constants.cellSize),
+                                    Constants.cellSize, Constants.cellSize, null);
+                            break;
+                        case Constants.pZ:
+                            g.drawImage(Assets.pieceZ, ((i) * Constants.cellSize), ((j+Constants.downOffset)* Constants.cellSize),
+                                    Constants.cellSize, Constants.cellSize, null);
+                            break;
+                        default:
+                            break;
                     }
                 }
             }
         }
     }
     
-    public void drawOnMap(Element piece){
+    public void updateMap(Element piece){
         for(int i=0;i<4;i++){
             for(int j=0;j<4;j++){
                 if(piece.m[piece.getRotationPos()][i][j]){
@@ -99,7 +103,7 @@ public class GameMap1 {
     
     public void checkLineCompletion(){
         
-        for(int j=14;j>=0;j--){
+        for(int j=17;j>=0;j--){
             int aux = 0;
             
             for(int i=0;i<10;i++){

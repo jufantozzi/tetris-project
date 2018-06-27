@@ -3,10 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package control;
+package game;
 
 import States.GameState;
+import States.MenuState;
 import States.State;
+import screens.GameMap1;
 import util.Assets;
 import util.Constants;
 import game.Screen;
@@ -31,7 +33,6 @@ public class Game implements Runnable{
     private BufferStrategy bs;
     private Graphics g;
     //
-    public State state;
     public GameMap1 map1;
     
     public Game(String title, int height, int width){
@@ -42,7 +43,7 @@ public class Game implements Runnable{
     }
     
     private void tick(){
-        state.tick();
+        State.getState().tick();
     }
     
     private void render(){
@@ -56,7 +57,7 @@ public class Game implements Runnable{
         g.clearRect(0, 0, width, height);
         //clearing the screen
         
-        state.render(g); //actual rendering
+        State.getState().render(g); //actual rendering
         
         //disposing on screen
         bs.show();
@@ -65,17 +66,9 @@ public class Game implements Runnable{
     }
     
     private void init(){
-        screen = new Screen(title, width, height);
-
-        state = new GameState(this.screen);        
-
-        screen.setListener((GameState)state);
-
-        State.setState(state);
-
+        screen = new Screen(title, width, height); // criando nova tela
+        State.setState(new MenuState(g));//criando novo estado -- estado inicial: menu
         Assets.init();
-          
-          
     }
     
         @Override
