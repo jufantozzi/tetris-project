@@ -73,10 +73,9 @@ public class GameState extends State{
         drawBackScreen(g);
         map1.drawMap(g);      //desenha as peças que estão no mapa
         curPiece.drawThis(g); //desenha peça na tela
+        map1.drawNextPiece(nextPiece, g); //desenha proxima peça
         //desenho do score
         map1.drawScore(g);
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
-        g.drawString(String.valueOf(score), Constants.cellSize * 10 + 10, 300);
         
         if(isPaused){
             this.drawPauseScreen(g);

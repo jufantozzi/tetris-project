@@ -14,6 +14,8 @@ import Elements.PieceS;
 import Elements.PieceT;
 import Elements.PieceZ;
 import States.GameState;
+import static States.GameState.score;
+import java.awt.Font;
 import util.Assets;
 import java.awt.Graphics;
 import util.Constants;
@@ -139,10 +141,20 @@ public class GameMap1 {
     }
 
     public void drawScore(Graphics g) {
-        
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
+        g.drawString("Score:", Constants.cellSize * 10 + 10, 270);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+        g.drawString(String.valueOf(score), Constants.cellSize * 11 + 10, 300);
     }
     
-    public void drawNextPieces(Graphics g){
-        
+    public void drawNextPiece(Element element, Graphics g){
+        for(int i=0;i<4;i++){
+            for(int j=0;j<4;j++){
+                if(element.m[element.getRotationPos()][i][j]){
+                    g.drawImage(element.getImage(), (Constants.cellSize-10)*(15+i), (Constants.cellSize-10)*(15+j),
+                            Constants.cellSize-10 ,Constants.cellSize-10 , null);
+                }
+            }
+        }
     }
 }
