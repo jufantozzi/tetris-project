@@ -70,7 +70,7 @@ public class GameMap1 {
     public void drawOnMap(Element piece){
         for(int i=0;i<4;i++){
             for(int j=0;j<4;j++){
-                if(piece.m[i][j]){
+                if(piece.m[piece.getRotationPos()][i][j]){
                     if(piece instanceof PieceI){
                         map[i + piece.getXPos()][j + piece.getYPos()] = Constants.pI;
                     }

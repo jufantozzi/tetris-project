@@ -22,7 +22,7 @@ public class PieceI extends Element {
     private void setMatrix(){
         for(int i=0;i<4;i++){
             for(int j=0;j<4;j++){
-                this.m[i][j] = j==2;
+                this.m[rotationPos][i][j] = j==2;
             }
         }
     }

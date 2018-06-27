@@ -23,7 +23,7 @@ public class PieceO extends Element {
             for(int j=0;j<4;j++){
                 if(i>0 & i<3){
                     if(j>0 & j<3){
-                        this.m[i][j] = true;
+                        this.m[rotationPos][i][j] = true;
                     }
                 }
             }

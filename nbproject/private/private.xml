@@ -6,11 +6,10 @@
             <file>file:/home/ju/NetBeansProjects/Game/src/States/GameState.java</file>
             <file>file:/home/ju/NetBeansProjects/Game/src/game/Screen.java</file>
             <file>file:/home/ju/NetBeansProjects/Game/src/util/Constants.java</file>
-            <file>file:/home/ju/NetBeansProjects/Game/src/control/Game.java</file>
             <file>file:/home/ju/NetBeansProjects/Game/src/game/Main.java</file>
-            <file>file:/home/ju/NetBeansProjects/Game/src/control/GameMap1.java</file>
-            <file>file:/home/ju/NetBeansProjects/Game/src/Elements/Element.java</file>
+            <file>file:/home/ju/NetBeansProjects/Game/src/States/State.java</file>
             <file>file:/home/ju/NetBeansProjects/Game/src/util/Assets.java</file>
+            <file>file:/home/ju/NetBeansProjects/Game/src/Elements/Element.java</file>
         </group>
     </open-files>
 </project-private>
