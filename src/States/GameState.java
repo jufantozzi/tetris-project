@@ -32,7 +32,7 @@ import java.util.Random;
 public class GameState extends State{
 
     private boolean pauseOption, isPaused;
-    private int ticks, gameSpeed;
+    double ticks, gameSpeed;
     public final ArrayList<Element> pieceArray = new ArrayList();
     public Element curPiece;
     public static GameMap1 map1;
@@ -53,8 +53,8 @@ public class GameState extends State{
     @Override
     public void tick() {
             if(!isPaused){
-            ticks++;   //gameSpeed >= 60 means it will run 1 time per sec
-            if(ticks/gameSpeed >= 60){                              //game speed. As gameSpeed grows, game gets faster
+            ticks++;   //gameSpeed >= 60 at gameSpeed = 1, means it will run 1 time per sec
+            if(ticks*gameSpeed >= 60){                              //As gameSpeed grows, game gets faster
                 if(!curPiece.moveDown(curPiece)){                   //if cannot move piece down, draw it on the map
                     map1.updateMap(curPiece);                       //generate a new piece
                     map1.checkLineCompletion();
