@@ -1,4 +1,4 @@
-/*
+ /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -24,7 +24,7 @@ public class MenuState extends State implements KeyListener {
     public MenuState(Graphics g){
         menuOption = 0;
         this.ticks = 0;
-        Screen.getFrame().addKeyListener(this);
+        //Screen.getFrame().addKeyListener(this);
         this.g = g;
     }
     
@@ -34,10 +34,6 @@ public class MenuState extends State implements KeyListener {
         ticks++;
         if(this.ticks >= 60){
         }
-        /*if(this.ticks >= 360){
-        State.setState(new GameState());
-        
-        }*/
     }
 
     @Override
@@ -70,9 +66,10 @@ public class MenuState extends State implements KeyListener {
                 if(menuOption == 4) menuOption = 1;
                 break;
             case KeyEvent.VK_ENTER:
-                if(menuOption%3 == 0){
+                if(menuOption%3 == 0){ //menuOption%3 => selecting start
                     Screen.removeListener(State.getState());
                     State.setState(new GameState(g));
+                    Screen.getFrame().addKeyListener(State.getState());
                 }
                 else if(menuOption%3 == 1){
                 }
