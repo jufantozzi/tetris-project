@@ -14,7 +14,7 @@ import Elements.PieceO;
 import Elements.PieceS;
 import Elements.PieceT;
 import Elements.PieceZ;
-import control.GameMap1;
+import screens.GameMap1;
 import util.Assets;
 import util.Constants;
 import game.Screen;
@@ -36,9 +36,13 @@ public class GameState extends State{
     public final ArrayList<Element> pieceArray = new ArrayList();
     public Element curPiece;
     public static GameMap1 map1;
+    Graphics g;
     Random rand = new Random();
     int x;
-    public GameState(Screen screen){
+    public GameState(Graphics g){
+        Screen.getFrame().addKeyListener(this);
+        this.g = g;
+        map1 = new GameMap1(g);
         ticks = 0;
         this.curPiece = this.getRandPiece(rand.nextInt(7));
         this.gameSpeed = 1;
@@ -48,11 +52,11 @@ public class GameState extends State{
     
     @Override
     public void tick() {
-        if(!isPaused){
+            if(!isPaused){
             ticks++;   //gameSpeed >= 60 means it will run 1 time per sec
             if(ticks/gameSpeed >= 60){                              //game speed. As gameSpeed grows, game gets faster
                 if(!curPiece.moveDown(curPiece)){                   //if cannot move piece down, draw it on the map
-                    map1.drawOnMap(curPiece);                       //generate a new piece
+                    map1.updateMap(curPiece);                       //generate a new piece
                     map1.checkLineCompletion();
                     curPiece = this.getRandPiece(rand.nextInt(7)); 
                 }
@@ -63,9 +67,6 @@ public class GameState extends State{
 
     @Override
     public void render(Graphics g) {
-        if(map1 == null){
-            map1 = new GameMap1(g);
-        }
         drawBackScreen(g);
         map1.drawMap(g);
         curPiece.drawThis(g); //desenha peça na tela
@@ -173,10 +174,11 @@ public class GameState extends State{
                     this.pauseOption = !this.pauseOption;
                     break;
                 case KeyEvent.VK_ENTER:
-                    if(pauseOption) {
-                        
+                    if(pauseOption) { //if selecting quit game
+                        Screen.removeListener(State.getState());
+                        State.setState(new MenuState(g));
                     }
-                    else{
+                    else{//if selecting resume button
                         this.isPaused = false;
                     } 
                         

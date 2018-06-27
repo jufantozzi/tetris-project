@@ -3,14 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/home/ju/NetBeansProjects/Game/src/screens/GameMap1.java</file>
             <file>file:/home/ju/NetBeansProjects/Game/src/States/GameState.java</file>
+            <file>file:/home/ju/NetBeansProjects/Game/src/States/MenuState.java</file>
             <file>file:/home/ju/NetBeansProjects/Game/src/game/Screen.java</file>
             <file>file:/home/ju/NetBeansProjects/Game/src/util/Constants.java</file>
-            <file>file:/home/ju/NetBeansProjects/Game/src/control/Game.java</file>
             <file>file:/home/ju/NetBeansProjects/Game/src/game/Main.java</file>
-            <file>file:/home/ju/NetBeansProjects/Game/src/control/GameMap1.java</file>
+            <file>file:/home/ju/NetBeansProjects/Game/src/util/ImageLoader.java</file>
+            <file>file:/home/ju/NetBeansProjects/Game/src/States/State.java</file>
             <file>file:/home/ju/NetBeansProjects/Game/src/Elements/Element.java</file>
             <file>file:/home/ju/NetBeansProjects/Game/src/util/Assets.java</file>
+            <file>file:/home/ju/NetBeansProjects/Game/src/game/Game.java</file>
         </group>
     </open-files>
 </project-private>

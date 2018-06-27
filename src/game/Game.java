@@ -8,7 +8,7 @@ package game;
 import States.GameState;
 import States.MenuState;
 import States.State;
-import control.GameMap1;
+import screens.GameMap1;
 import util.Assets;
 import util.Constants;
 import game.Screen;
@@ -67,8 +67,7 @@ public class Game implements Runnable{
     
     private void init(){
         screen = new Screen(title, width, height); // criando nova tela
-        State.setState(new MenuState());//criando novo estado -- estado inicial: menu
-        screen.setListener(State.getState());
+        State.setState(new MenuState(g));//criando novo estado -- estado inicial: menu
         Assets.init();
     }
     

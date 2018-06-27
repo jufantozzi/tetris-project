@@ -15,7 +15,7 @@ import static javax.swing.Spring.height;
  * @author ju
  */
 public class Screen extends javax.swing.JFrame{
-    private JFrame screen;
+    private static JFrame screen;
     private String title;
     private int widht, height;
     private Canvas canvas;
@@ -40,16 +40,19 @@ public class Screen extends javax.swing.JFrame{
         
     }
     
-    public void setListener(State state){
-        screen.addKeyListener(state);
+    public static void setListener(State state){
+        screen.addKeyListener(State.getState());
+    }
+    public static void removeListener(State state){
+        screen.removeKeyListener(State.getState());
     }
     
     public Canvas getCanvas(){
         return this.canvas;
     }
     
-    public JFrame getFrame(){
-        return this.screen;
+    static public JFrame getFrame(){
+        return screen;
     }
 }
 
