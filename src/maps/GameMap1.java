@@ -26,11 +26,16 @@ import util.Constants;
  * @author ju
  */
 public class GameMap1 {
-    public static  int[][] map = new int[10][18]; // primeiro numero: >> <<  / segundo numero: up, down
+    public int[][] map = new int[10][18]; // primeiro numero: >> <<  / segundo numero: up, down
     private Graphics g;
+    
     
     public GameMap1(Graphics g) {
         this.g = g;
+    }
+    
+    public int[][] getMap() {
+        return this.map;
     }
     
     public void drawMap(Graphics g){

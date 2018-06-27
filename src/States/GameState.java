@@ -32,22 +32,22 @@ import java.util.Random;
 public class GameState extends State{
 
     private boolean pauseOption, isPaused;
-    double ticks, gameSpeed;
+    static double ticks, gameSpeed;
     public Element curPiece, nextPiece;
     public static GameMap1 map1;
-    private final Graphics g;
+    private Graphics g;
     Random rand = new Random();
     public static long score;
     
     public GameState(Graphics g){
-        this.g = g;
-        map1 = new GameMap1(g);
-        ticks = 0;
         this.curPiece = this.getRandPiece(rand.nextInt(7));
         this.nextPiece = this.getRandPiece(rand.nextInt(7));
-        this.gameSpeed = 1;
         this.pauseOption = false;
         this.isPaused = false;
+        this.g = g;
+        map1 = new GameMap1(g);
+        gameSpeed = 1;
+        ticks = 0;
         score = 0;
     }
     
@@ -110,6 +110,9 @@ public class GameState extends State{
     }
     
     public static boolean isValid(Element element){
+        if(element.getHighestY() < -1){ //check bottom screen border
+            return false;
+        }
         if(element.getLowestY() >= Constants.yMaxPos){ //check bottom screen border
             return false;
         }
@@ -119,12 +122,15 @@ public class GameState extends State{
         if(element.getHighestX() >= Constants.xMaxPos){//check right screen border
             return false;
         }
+        
+        int[][] map = null;
+        
         for(int i=0;i<4;i++){ //check collision with other objects in map
             
             for(int j=0;j<4;j++){
-                
+                //necessario: posicao do elemento; mapa;
                 if(element.m[element.getRotationPos()][i][j]){
-                    if(GameMap1.map[i+element.getXPos()][j+element.getYPos()] != 0){
+                    if(map1.map[i+element.getXPos()][j+element.getYPos()] != 0){
                         return false;
                     }
                 }
@@ -133,6 +139,11 @@ public class GameState extends State{
         return true;
     }
         
+    
+    public static void setTick(int i){
+        ticks=i;
+    }
+    
     private Element getRandPiece(int n){
         switch(n){
             case 0: return new PieceI();
@@ -164,6 +175,9 @@ public class GameState extends State{
                     break;  
                 case KeyEvent.VK_ESCAPE:
                     isPaused = true;
+                    break;
+                case KeyEvent.VK_SPACE:
+                    curPiece.fallDown(curPiece);
                     break;
                 default:
                     break;

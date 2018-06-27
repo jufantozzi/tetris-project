@@ -9,18 +9,23 @@ import States.GameState;
 import util.Constants;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.HashSet;
 
 
-public class Element{
+public abstract class Element{
     protected BufferedImage image;
     protected int xPos, yPos, rotationPos;
     public boolean[][][] m = new boolean[4][4][4];
-    
+    Graphics g;
+
     public Element(){
         rotationPos = 0;
         this.xPos = 3;
         this.yPos = -1;  //(GUIimg space)
     }
+
+    public abstract void setMatrix(int pos);
+
     
     public void drawThis(Graphics g){    
         for(int i=0;i<4;i++){
@@ -60,6 +65,19 @@ public class Element{
             for(int j=0;j<4;j++){
                 if(m[rotationPos][i][j]){
                     if(j > maxVal)
+                    maxVal = j;
+                }
+            }
+        }
+        return (maxVal + this.getYPos() -1);
+    }
+    
+    public int getHighestY() {
+        int maxVal = 3;
+        for(int i=0;i<4;i++){
+            for(int j=0;j<4;j++){
+                if(m[rotationPos][i][j]){
+                    if(maxVal > j)
                     maxVal = j;
                 }
             }
@@ -132,9 +150,25 @@ public class Element{
         }
     }
     
+    public void fallDown(Element e){
+        this.yPos++;
+        while(GameState.isValid(e)){
+            this.yPos++;
+        }
+        this.yPos--;
+        GameState.setTick(60);
+    }
+    
     public void rotate(Element piece){
-        if(piece instanceof PieceI){
-            
+        piece.rotationPos++;
+        if(this.rotationPos == 4) this.rotationPos = 0;
+        piece.setMatrix(this.rotationPos);
+        if(!GameState.isValid(piece)) this.rotationPos--;
+        if(this.rotationPos == -1) this.rotationPos = 3;
+        
+        
+        /*if(piece instanceof PieceI){
+        
         }
         else if(piece instanceof PieceJ){
         
@@ -153,7 +187,7 @@ public class Element{
         }
         else if(piece instanceof PieceZ){
         
-        }
+        }*/
     }
 
 }

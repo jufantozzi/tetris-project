@@ -16,9 +16,9 @@ public class PieceO extends Element {
     public PieceO() {
         super();
         this.image = ImageLoader.loadImage("/pieceO.png");  
-        setMatrix();
+        setMatrix(0);
     }
-    private void setMatrix(){
+    public void setMatrix(int dontCare){
         for(int i=0;i<4;i++){
             for(int j=0;j<4;j++){
                 if(i>0 & i<3){
