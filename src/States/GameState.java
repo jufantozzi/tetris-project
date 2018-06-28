@@ -31,7 +31,7 @@ import maps.GameMap2;
  */
 public class GameState extends State{
 
-    private boolean pauseOption, isPaused;
+    private boolean isPaused;
     static double ticks, gameSpeed;
     public Element curPiece, nextPiece;
     public static GameMap1 map1;
@@ -39,13 +39,12 @@ public class GameState extends State{
     private Graphics g;
     Random rand = new Random();
     public static long score;
-    private int mapSelect;
+    private int pauseOption, mapSelect;
     
     public GameState(Graphics g, int mapSelect){
         this.curPiece = this.getRandPiece(rand.nextInt(7));
         this.nextPiece = this.getRandPiece(rand.nextInt(7));
-        this.pauseOption = false;
-        this.isPaused = false;
+        this.pauseOption = 0;
         this.mapSelect = mapSelect;
         this.g = g;
         gameSpeed = 1;
@@ -66,7 +65,11 @@ public class GameState extends State{
                         map1.updateMap(curPiece);                       //generate a new piece
                         map1.checkLineCompletion();
                         curPiece = nextPiece; 
-                        nextPiece = this.getRandPiece(rand.nextInt(7)); 
+                        if(!GameMap1.isValid(curPiece)){
+                            
+                        }
+                        nextPiece = this.getRandPiece(rand.nextInt(7));
+                        
                     }
                 }
                 else if(mapSelect == 1){
@@ -100,8 +103,11 @@ public class GameState extends State{
     }
     
     private void drawPauseScreen(Graphics g){
-        if(!pauseOption){
+        if(pauseOption==0){
             g.drawImage(Assets.pauseScreenR, 200, 250, 200, 200, null);
+        }
+        else if(pauseOption == 1){
+            g.drawImage(Assets.pauseScreenL, 200, 250, 200, 200, null);
         }
         else{
             g.drawImage(Assets.pauseScreenQ, 200, 250, 200, 200, null);
@@ -116,7 +122,7 @@ public class GameState extends State{
         for(int i=0;i<4;i++){
             for(int j=0;j<4;j++){
                 if(element.m[element.getRotationPos()][i][j]){
-                    g.drawImage(element.getImage(), (Constants.cellSize-10)*(16+i)-5, (Constants.cellSize-10)*(23+j)+5,
+                    g.drawImage(element.getImage(), (Constants.cellSize-10)*(16+i)-7, (Constants.cellSize-10)*(23+j)+5,
                             Constants.cellSize-10 ,Constants.cellSize-10 , null);
                 }
             }
@@ -174,16 +180,21 @@ public class GameState extends State{
         else{
             switch (e.getKeyCode()) {
                 case KeyEvent.VK_UP:
-                    this.pauseOption = !this.pauseOption;
+                    this.pauseOption--;
+                    if(pauseOption == -1) pauseOption = 2;
                     break;
                 case KeyEvent.VK_DOWN:
-                    this.pauseOption = !this.pauseOption;
+                    this.pauseOption++;
+                    if(pauseOption == 4) pauseOption = 0;
                     break;
                 case KeyEvent.VK_ENTER:
-                    if(pauseOption) { //if selecting quit game
+                    if(pauseOption == 0) { //if selecting quit game
                         Screen.removeListener(State.getState());
                         State.setState(new MenuState(g));
                         Screen.getFrame().addKeyListener(State.getState());
+                    }
+                    else if(pauseOption == 1){
+                        //save implementation
                     }
                     else{//if selecting resume button
                         this.isPaused = false;
