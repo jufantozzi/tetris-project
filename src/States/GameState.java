@@ -188,19 +188,23 @@ public class GameState extends State{
                     if(pauseOption == 4) pauseOption = 0;
                     break;
                 case KeyEvent.VK_ENTER:
-                    if(pauseOption == 0) { //if selecting quit game
-                        Screen.removeListener(State.getState());
-                        State.setState(new MenuState(g));
-                        Screen.getFrame().addKeyListener(State.getState());
-                    }
-                    else if(pauseOption == 1){
-                        //save implementation
-                    }
-                    else{//if selecting resume button
-                        this.isPaused = false;
-                    } 
+            switch (pauseOption) {
+                case 0:
+                    //if selecting quit game
+                    Screen.removeListener(State.getState());
+                    State.setState(new MenuState(g));
+                    Screen.getFrame().addKeyListener(State.getState());
+                    break;
+                case 1://selecting save
+                    //save implementation
+                    break; 
+                default:
+                    //if selecting resume button
+                    this.isPaused = false;
+                    break;
+            }
                         
-                    break;      
+                    break;            
                 case KeyEvent.VK_ESCAPE:
                     isPaused = false;
                     break;
