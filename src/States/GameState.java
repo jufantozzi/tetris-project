@@ -111,18 +111,19 @@ public class GameState extends State{
     private void drawBackScreen(Graphics g){
         BufferedImage backgroundImage, topScreen = Assets.topScreen;
         
-        g.drawImage(topScreen, 0, 0, 400, 100, null);
+        g.drawImage(topScreen, 0, 0, 400, 105, null);
         
         backgroundImage = Assets.backgroundPiece;
-        //draws background static pieces
-        for(int i = 0; i < (Constants.screenW/Constants.cellSize) - Constants.sideOffset; i++){
-            
-            for(int j = Constants.downOffset; j < Constants.screenH/Constants.cellSize; j++){ //j = 3, backgrounscreen starts 3 tiles down
-               
-                g.drawImage(backgroundImage, i * Constants.cellSize, j * Constants.cellSize,
-                        Constants.cellSize, Constants.cellSize, null);
-            } 
+        //draws background static image
+        g.drawImage(Assets.backgroundPiece, 0, 0, null);
+        /*for(int i = 0; i < (Constants.screenW/Constants.cellSize) - Constants.sideOffset; i++){
+        
+        for(int j = Constants.downOffset; j < Constants.screenH/Constants.cellSize; j++){ //j = 3, backgrounscreen starts 3 tiles down
+        
+        g.drawImage(backgroundImage, i * Constants.cellSize, j * Constants.cellSize,
+        Constants.cellSize, Constants.cellSize, null);
         }
+        }*/
         //draws background static pieces       
     }   
     
@@ -130,7 +131,7 @@ public class GameState extends State{
         for(int i=0;i<4;i++){
             for(int j=0;j<4;j++){
                 if(element.m[element.getRotationPos()][i][j]){
-                    g.drawImage(element.getImage(), (Constants.cellSize-10)*(15+i), (Constants.cellSize-10)*(15+j),
+                    g.drawImage(element.getImage(), (Constants.cellSize-10)*(16+i)-5, (Constants.cellSize-10)*(23+j)+5,
                             Constants.cellSize-10 ,Constants.cellSize-10 , null);
                 }
             }
@@ -138,10 +139,8 @@ public class GameState extends State{
     }
     
     private void drawScore(Graphics g) {
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
-        g.drawString("Score:", Constants.cellSize * 10 + 10, 270);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
-        g.drawString(String.valueOf(score), Constants.cellSize * 11 + 10, 300);
+        g.drawString(String.valueOf(score), Constants.cellSize * 11, 485);
     }
     
     public static void setTick(int i){

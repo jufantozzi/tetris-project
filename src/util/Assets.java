@@ -14,7 +14,9 @@ import java.awt.image.BufferedImage;
  */
 public class Assets {
     public static BufferedImage backgroundPiece, pieceI,pieceJ, pieceL, pieceO, 
-            pieceS, pieceT, pieceZ, topScreen, pauseScreenQ, pauseScreenR, menuScreenStart, menuScreenLoad, menuScreenExit;
+            pieceS, pieceT, pieceZ, topScreen, pauseScreenR, pauseScreenL, pauseScreenQ, //gamestate
+            menuScreenStart, menuScreenSelect, menuScreenLoad, menuScreenExit;   //menu
+            
     
     
     public static void init(){
@@ -30,6 +32,7 @@ public class Assets {
         pauseScreenQ = ImageLoader.loadImage("/pauseScreenQ.png");
         pauseScreenR = ImageLoader.loadImage("/pauseScreenR.png");
         menuScreenStart = ImageLoader.loadImage("/menuScreenStart.png");
+        //menuScreenSelect = ImageLoader.loadImage("/menuScreenSelect.png");
         menuScreenLoad = ImageLoader.loadImage("/menuScreenLoad.png");
         menuScreenExit = ImageLoader.loadImage("/menuScreenExit.png");
     }

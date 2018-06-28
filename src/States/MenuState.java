@@ -19,12 +19,13 @@ import util.Constants;
 public class MenuState extends State implements KeyListener {
     Graphics g;
     int menuOption, ticks;
+    private boolean mapSelectScreenOn;
     
     
     public MenuState(Graphics g){
         menuOption = 0;
         this.ticks = 0;
-        //Screen.getFrame().addKeyListener(this);
+        mapSelectScreenOn = false;
         this.g = g;
     }
     
@@ -48,8 +49,12 @@ public class MenuState extends State implements KeyListener {
         else if(this.menuOption%3 == 2 | this.menuOption%3 == -2){
             g.drawImage(Assets.menuScreenExit, 0, 0, Constants.screenW, Constants.screenH, null);
         }
+        if(this.mapSelectScreenOn) {
+            g.drawImage(Assets.menuScreenSelect, 200, 300, Constants.screenW, Constants.screenH, null);
+        }
     }
-
+    
+    
     @Override
     public void keyTyped(KeyEvent e) {
     }
@@ -58,25 +63,42 @@ public class MenuState extends State implements KeyListener {
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_UP:
+                if(mapSelectScreenOn) break;
                 this.menuOption--;
                 if(menuOption == -1) menuOption = 2;
                 break;
             case KeyEvent.VK_DOWN:
+                if(mapSelectScreenOn) break;
                 this.menuOption++;
                 if(menuOption == 4) menuOption = 1;
                 break;
-            case KeyEvent.VK_ENTER:
-                if(menuOption%3 == 0){ //menuOption%3 => selecting start
+            case KeyEvent.VK_1:
+                if(mapSelectScreenOn){    
+                    Screen.removeListener(State.getState());
+                    State.setState(new GameState(g, 0));
+                    Screen.getFrame().addKeyListener(State.getState());
+                }
+                break;
+            case KeyEvent.VK_2:
+                if(mapSelectScreenOn){
                     Screen.removeListener(State.getState());
                     State.setState(new GameState(g, 1));
                     Screen.getFrame().addKeyListener(State.getState());
                 }
-                else if(menuOption%3 == 1){
+                break;
+            case KeyEvent.VK_ENTER:
+                if(menuOption%3 == 0){ //menuOption%3 => selecting start
+                    if(!mapSelectScreenOn) mapSelectScreenOn = !mapSelectScreenOn;
+                    
+                }
+                else if(menuOption%3 == 1){ //load game
                 }
                 else if(menuOption%3 == 2){
                     System.exit(0);
                 }
                 break;
+            case KeyEvent.VK_ESCAPE:
+                if(mapSelectScreenOn) mapSelectScreenOn = !mapSelectScreenOn;
                 
         }
     }
