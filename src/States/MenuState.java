@@ -50,7 +50,7 @@ public class MenuState extends State implements KeyListener {
             g.drawImage(Assets.menuScreenExit, 0, 0, Constants.screenW, Constants.screenH, null);
         }
         if(this.mapSelectScreenOn) {
-            g.drawImage(Assets.menuScreenSelect, 200, 300, Constants.screenW, Constants.screenH, null);
+            g.drawImage(Assets.menuScreenSelect, 250, 250, 250, 250, null);
         }
     }
     

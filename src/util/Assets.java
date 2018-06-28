@@ -32,7 +32,7 @@ public class Assets {
         pauseScreenQ = ImageLoader.loadImage("/pauseScreenQ.png");
         pauseScreenR = ImageLoader.loadImage("/pauseScreenR.png");
         menuScreenStart = ImageLoader.loadImage("/menuScreenStart.png");
-        //menuScreenSelect = ImageLoader.loadImage("/menuScreenSelect.png");
+        menuScreenSelect = ImageLoader.loadImage("/menuScreenSelect.png");
         menuScreenLoad = ImageLoader.loadImage("/menuScreenLoad.png");
         menuScreenExit = ImageLoader.loadImage("/menuScreenExit.png");
     }
