@@ -177,13 +177,13 @@ public class GameMap2 {
     }
 
     private void setCustomMap() {
-        map[5][17] = 1;
-        map[4][17] = 1;
-        map[0][17] = 1;
-        map[9][17] = 1;
-        map[9][15] = 1;
-        map[5][15] = 1;
-        map[4][15] = 1;
-        map[0][15] = 1;
+        map[3][9] = 1;
+        map[3][8] = 1;
+        map[2][9] = 1;
+        map[7][8] = 1;
+        map[6][9] = 1;
+        map[7][9] = 1;
+        map[6][8] = 1;
+        map[2][8] = 1;
     }
 }
