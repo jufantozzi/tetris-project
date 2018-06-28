@@ -109,22 +109,7 @@ public class GameState extends State{
     }
     
     private void drawBackScreen(Graphics g){
-        BufferedImage backgroundImage, topScreen = Assets.topScreen;
-        
-        g.drawImage(topScreen, 0, 0, 400, 105, null);
-        
-        backgroundImage = Assets.backgroundPiece;
-        //draws background static image
         g.drawImage(Assets.backgroundPiece, 0, 0, null);
-        /*for(int i = 0; i < (Constants.screenW/Constants.cellSize) - Constants.sideOffset; i++){
-        
-        for(int j = Constants.downOffset; j < Constants.screenH/Constants.cellSize; j++){ //j = 3, backgrounscreen starts 3 tiles down
-        
-        g.drawImage(backgroundImage, i * Constants.cellSize, j * Constants.cellSize,
-        Constants.cellSize, Constants.cellSize, null);
-        }
-        }*/
-        //draws background static pieces       
     }   
     
     private void drawNextPiece(Element element, Graphics g){

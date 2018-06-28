@@ -28,7 +28,6 @@ public class Assets {
         pieceS = ImageLoader.loadImage("/pieceS.png");
         pieceT = ImageLoader.loadImage("/pieceT.png");
         pieceZ = ImageLoader.loadImage("/pieceZ.png");
-        topScreen = ImageLoader.loadImage("/topScreen.png");
         pauseScreenQ = ImageLoader.loadImage("/pauseScreenQ.png");
         pauseScreenR = ImageLoader.loadImage("/pauseScreenR.png");
         menuScreenStart = ImageLoader.loadImage("/menuScreenStart.png");
