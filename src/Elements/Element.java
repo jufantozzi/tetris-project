@@ -10,6 +10,8 @@ import util.Constants;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.HashSet;
+import maps.GameMap1;
+import maps.GameMap2;
 
 
 public abstract class Element{
@@ -117,77 +119,105 @@ public abstract class Element{
         return rotationPos;
     }
     
-    public boolean moveRight(Element e){
-        this.xPos += 1;
-        if(GameState.isValid(e)){
-            return true;
+    public boolean moveRight(Element e, int mapSelect){
+        if(mapSelect == 0){
+            this.xPos += 1;
+            if(GameMap1.isValid(e)){
+                return true;
+            }
+            else{
+                this.xPos--;
+                return false;
+            }
         }
         else{
-            this.xPos--;
-            return false;
+            this.xPos += 1;
+            if(GameMap2.isValid(e)){
+                return true;
+            }
+            else{
+                this.xPos--;
+                return false;
+            }
         }
     }
     
-    public boolean moveLeft(Element e){
-        this.xPos -= 1;
-        if(GameState.isValid(e)){
-            return true;
+    public boolean moveLeft(Element e, int mapSelect){
+        if(mapSelect == 0){
+            this.xPos -= 1;
+            if(GameMap1.isValid(e)){
+                return true;
+            }
+            else{
+                this.xPos++;
+                return false;
+            }
         }
         else{
-            this.xPos++;
-            return false;
+            this.xPos -= 1;
+            if(GameMap2.isValid(e)){
+                return true;
+            }
+            else{
+                this.xPos++;
+                return false;
+            }
         }
     }
     
-    public boolean moveDown(Element e){
-        this.yPos += 1;
-        if(GameState.isValid(e)){
-            return true;
+    public boolean moveDown(Element e, int mapSelect){
+        if(mapSelect == 0){
+            this.yPos += 1;
+            if(GameMap1.isValid(e)){
+                return true;
+            }
+            else{
+                this.yPos--;
+                return false;
+            }
         }
         else{
+            this.yPos += 1;
+            if(GameMap2.isValid(e)){
+                return true;
+            }
+            else{
+                this.yPos--;
+                return false;
+            }
+        }
+    }
+    
+    public void fallDown(Element e, int mapSelect){
+        if(mapSelect == 0){
+            this.yPos += 1;
+            while(GameMap1.isValid(e)){
+                this.yPos++;
+            }
             this.yPos--;
-            return false;
+            GameState.setTick(60);
+        }
+        else{
+            this.yPos += 1;
+            while(GameMap2.isValid(e)){
+                this.yPos++;
+            }
+            this.yPos--;
+            GameState.setTick(60);
         }
     }
     
-    public void fallDown(Element e){
-        this.yPos++;
-        while(GameState.isValid(e)){
-            this.yPos++;
-        }
-        this.yPos--;
-        GameState.setTick(60);
-    }
-    
-    public void rotate(Element piece){
+    public void rotate(Element piece, int mapSelect){
         piece.rotationPos++;
         if(this.rotationPos == 4) this.rotationPos = 0;
         piece.setMatrix(this.rotationPos);
-        if(!GameState.isValid(piece)) this.rotationPos--;
-        if(this.rotationPos == -1) this.rotationPos = 3;
-        
-        
-        /*if(piece instanceof PieceI){
-        
+        if(mapSelect == 0){
+            if(!GameMap1.isValid(piece)) this.rotationPos--;
+            if(this.rotationPos == -1) this.rotationPos = 3;
         }
-        else if(piece instanceof PieceJ){
-        
+        else{
+            if(!GameMap2.isValid(piece)) this.rotationPos--;
+            if(this.rotationPos == -1) this.rotationPos = 3;
         }
-        else if(piece instanceof PieceL){
-        
-        }
-        else if(piece instanceof PieceO){
-        
-        }
-        else if(piece instanceof PieceS){
-        
-        }
-        else if(piece instanceof PieceT){
-        
-        }
-        else if(piece instanceof PieceZ){
-        
-        }*/
     }
-
 }

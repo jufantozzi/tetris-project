@@ -26,20 +26,22 @@ import util.Constants;
  *
  * @author ju
  */
-public class GameMap1 {
-    private static int[][] map = new int[10][18]; // primeiro numero: >> <<  / segundo numero: up, down
+public class GameMap2 {
+    public static int[][] map = new int[10][18]; // primeiro numero: >> <<  / segundo numero: up, down
     private Graphics g;
     
     
-    public GameMap1(Graphics g) {
+    public GameMap2(Graphics g) {
         this.g = g;
     }
     
     public int[][] getMap() {
-        return map;
+        return this.map;
     }
     
     public void drawMap(Graphics g){
+        setCustomMap();
+        
         for(int i=0;i<10;i++){
             for(int j=0;j<18;j++){
                 if(map[i][j] > 0){
@@ -174,21 +176,12 @@ public class GameMap1 {
         
     }
 
-    public void drawScore(Graphics g) {
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
-        g.drawString("Score:", Constants.cellSize * 10 + 10, 270);
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
-        g.drawString(String.valueOf(score), Constants.cellSize * 11 + 10, 300);
-    }
-    
-    public void drawNextPiece(Element element, Graphics g){
-        for(int i=0;i<4;i++){
-            for(int j=0;j<4;j++){
-                if(element.m[element.getRotationPos()][i][j]){
-                    g.drawImage(element.getImage(), (Constants.cellSize-10)*(15+i), (Constants.cellSize-10)*(15+j),
-                            Constants.cellSize-10 ,Constants.cellSize-10 , null);
-                }
-            }
-        }
+    private void setCustomMap() {
+        map[8][0] = 1;
+        map[9][0] = 1;
+        map[9][1] = 1;
+        map[0][2] = 1;
+        map[0][2] = 1;
+        map[1][2] = 1;
     }
 }

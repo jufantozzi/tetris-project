@@ -21,8 +21,8 @@ import game.Screen;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.Random;
+import maps.GameMap2;
 
 
 /**
@@ -35,20 +35,24 @@ public class GameState extends State{
     static double ticks, gameSpeed;
     public Element curPiece, nextPiece;
     public static GameMap1 map1;
+    public static GameMap2 map2;
     private Graphics g;
     Random rand = new Random();
     public static long score;
+    private int mapSelect;
     
-    public GameState(Graphics g){
+    public GameState(Graphics g, int mapSelect){
         this.curPiece = this.getRandPiece(rand.nextInt(7));
         this.nextPiece = this.getRandPiece(rand.nextInt(7));
         this.pauseOption = false;
         this.isPaused = false;
+        this.mapSelect = mapSelect;
         this.g = g;
-        map1 = new GameMap1(g);
         gameSpeed = 1;
         ticks = 0;
         score = 0;
+        if(mapSelect == 0) map1 = new GameMap1(g);
+        else map2 = new GameMap2(g);
     }
     
     @Override
@@ -57,11 +61,21 @@ public class GameState extends State{
             if(!isPaused){
             ticks++;   //gameSpeed >= 60 at gameSpeed = 1, means it will run 1 time per sec
             if(ticks*gameSpeed >= 60){                              //As gameSpeed grows, game gets faster
-                if(!curPiece.moveDown(curPiece)){                   //if cannot move piece down, draw it on the map
-                    map1.updateMap(curPiece);                       //generate a new piece
-                    map1.checkLineCompletion();
-                    curPiece = nextPiece; 
-                    nextPiece = this.getRandPiece(rand.nextInt(7)); 
+                if(mapSelect == 0){
+                    if(!curPiece.moveDown(curPiece, mapSelect)){                   //if cannot move piece down, draw it on the map
+                        map1.updateMap(curPiece);                       //generate a new piece
+                        map1.checkLineCompletion();
+                        curPiece = nextPiece; 
+                        nextPiece = this.getRandPiece(rand.nextInt(7)); 
+                    }
+                }
+                else if(mapSelect == 1){
+                    if(!curPiece.moveDown(curPiece, mapSelect)){                   //if cannot move piece down, draw it on the map
+                        map2.updateMap(curPiece);                       //generate a new piece
+                        map2.checkLineCompletion();
+                        curPiece = nextPiece; 
+                        nextPiece = this.getRandPiece(rand.nextInt(7)); 
+                    }
                 }
                 ticks = 0;
             }
@@ -71,11 +85,14 @@ public class GameState extends State{
     @Override
     public void render(Graphics g) {
         drawBackScreen(g);
-        map1.drawMap(g);      //desenha as peças que estão no mapa
-        curPiece.drawThis(g); //desenha peça na tela
-        map1.drawNextPiece(nextPiece, g); //desenha proxima peça
+        if(mapSelect == 0) map1.drawMap(g);
+                      else map2.drawMap(g);
+        
+        curPiece.drawThis(g); 
+        
+        drawNextPiece(nextPiece, g); 
         //desenho do score
-        map1.drawScore(g);
+        drawScore(g);
         
         if(isPaused){
             this.drawPauseScreen(g);
@@ -107,38 +124,25 @@ public class GameState extends State{
             } 
         }
         //draws background static pieces       
-    }
+    }   
     
-    public static boolean isValid(Element element){
-        if(element.getHighestY() < -1){ //check bottom screen border
-            return false;
-        }
-        if(element.getLowestY() >= Constants.yMaxPos){ //check bottom screen border
-            return false;
-        }
-        if(element.getLowestX() <= 0){ //check left side screen border
-            return false;
-        }
-        if(element.getHighestX() >= Constants.xMaxPos){//check right screen border
-            return false;
-        }
-        
-        int[][] map = null;
-        
-        for(int i=0;i<4;i++){ //check collision with other objects in map
-            
+    private void drawNextPiece(Element element, Graphics g){
+        for(int i=0;i<4;i++){
             for(int j=0;j<4;j++){
-                //necessario: posicao do elemento; mapa;
                 if(element.m[element.getRotationPos()][i][j]){
-                    if(map1.map[i+element.getXPos()][j+element.getYPos()] != 0){
-                        return false;
-                    }
+                    g.drawImage(element.getImage(), (Constants.cellSize-10)*(15+i), (Constants.cellSize-10)*(15+j),
+                            Constants.cellSize-10 ,Constants.cellSize-10 , null);
                 }
             }
         }
-        return true;
     }
-        
+    
+    private void drawScore(Graphics g) {
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
+        g.drawString("Score:", Constants.cellSize * 10 + 10, 270);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
+        g.drawString(String.valueOf(score), Constants.cellSize * 11 + 10, 300);
+    }
     
     public static void setTick(int i){
         ticks=i;
@@ -162,22 +166,22 @@ public class GameState extends State{
         if(!isPaused){
             switch (e.getKeyCode()) {
                 case KeyEvent.VK_UP:
-                    curPiece.rotate(curPiece);
+                    curPiece.rotate(curPiece, mapSelect);
                     break;
                 case KeyEvent.VK_DOWN:
-                    curPiece.moveDown(curPiece);
+                    curPiece.moveDown(curPiece, mapSelect);
                     break;
                 case KeyEvent.VK_LEFT:
-                    curPiece.moveLeft(curPiece);
+                    curPiece.moveLeft(curPiece, mapSelect);
                     break;
                 case KeyEvent.VK_RIGHT:
-                    curPiece.moveRight(curPiece);
+                    curPiece.moveRight(curPiece, mapSelect);
                     break;  
                 case KeyEvent.VK_ESCAPE:
                     isPaused = true;
                     break;
                 case KeyEvent.VK_SPACE:
-                    curPiece.fallDown(curPiece);
+                    curPiece.fallDown(curPiece, mapSelect);
                     break;
                 default:
                     break;

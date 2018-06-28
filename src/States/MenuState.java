@@ -68,7 +68,7 @@ public class MenuState extends State implements KeyListener {
             case KeyEvent.VK_ENTER:
                 if(menuOption%3 == 0){ //menuOption%3 => selecting start
                     Screen.removeListener(State.getState());
-                    State.setState(new GameState(g));
+                    State.setState(new GameState(g, 1));
                     Screen.getFrame().addKeyListener(State.getState());
                 }
                 else if(menuOption%3 == 1){
