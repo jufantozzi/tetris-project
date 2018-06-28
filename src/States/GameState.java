@@ -104,13 +104,13 @@ public class GameState extends State{
     
     private void drawPauseScreen(Graphics g){
         if(pauseOption==0){
-            g.drawImage(Assets.pauseScreenR, 200, 250, 200, 200, null);
+            g.drawImage(Assets.pauseScreenQ, 50, 250, 400, 200, null);
         }
         else if(pauseOption == 1){
-            g.drawImage(Assets.pauseScreenL, 200, 250, 200, 200, null);
+            g.drawImage(Assets.pauseScreenS, 50, 250, 400, 200, null);
         }
         else{
-            g.drawImage(Assets.pauseScreenQ, 200, 250, 200, 200, null);
+            g.drawImage(Assets.pauseScreenR, 50, 250, 400, 200, null);
         }
     }
     
@@ -168,6 +168,7 @@ public class GameState extends State{
                     curPiece.moveRight(curPiece, mapSelect);
                     break;  
                 case KeyEvent.VK_ESCAPE:
+                    this.pauseOption = 0;
                     isPaused = true;
                     break;
                 case KeyEvent.VK_SPACE:
@@ -179,29 +180,29 @@ public class GameState extends State{
         }
         else{
             switch (e.getKeyCode()) {
-                case KeyEvent.VK_UP:
+                case KeyEvent.VK_RIGHT:
+                    this.pauseOption++;
+                    if(pauseOption == 3) pauseOption = 0;
+                    break;
+                case KeyEvent.VK_LEFT:
                     this.pauseOption--;
                     if(pauseOption == -1) pauseOption = 2;
                     break;
-                case KeyEvent.VK_DOWN:
-                    this.pauseOption++;
-                    if(pauseOption == 4) pauseOption = 0;
-                    break;
                 case KeyEvent.VK_ENTER:
-            switch (pauseOption) {
-                case 0:
-                    //if selecting quit game
-                    Screen.removeListener(State.getState());
-                    State.setState(new MenuState(g));
-                    Screen.getFrame().addKeyListener(State.getState());
-                    break;
-                case 1://selecting save
-                    //save implementation
-                    break; 
-                default:
-                    //if selecting resume button
-                    this.isPaused = false;
-                    break;
+                    switch (pauseOption) {
+                        case 0:
+                            //if selecting quit game
+                            Screen.removeListener(State.getState());
+                            State.setState(new MenuState(g));
+                            Screen.getFrame().addKeyListener(State.getState());
+                            break;
+                        case 1://selecting save
+                            //save implementation
+                            break;
+                        //if selecting resume button
+                        case 2:
+                            this.isPaused = false;
+                            break;
             }
                         
                     break;            
