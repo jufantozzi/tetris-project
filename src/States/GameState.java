@@ -22,14 +22,17 @@ import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.Random;
+import java.util.Serializable;
 import maps.GameMap2;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 
 
 /**
  *
  * @author ju
  */
-public class GameState extends State{
+public class GameState extends State implements Serializable {
 
     private boolean isPaused;
     static double ticks, gameSpeed;
@@ -137,7 +140,7 @@ public class GameState extends State{
     public static void setTick(int i){
         ticks=i;
     }
-    
+
     private Element getRandPiece(int n){
         switch(n){
             case 0: return new PieceI();
@@ -151,6 +154,49 @@ public class GameState extends State{
         }
     }
     
+
+    public void saveOption(GameMap gm){
+
+        try{
+            FileOutputStream saveFile = new FileOutputStream("/NetBeansProject/tetris-project-master/src/save.dat");
+
+            ObjectOutputStream gameData = new ObjectOutputStream(saveFile);
+
+            gameData.writeObject(GameState);
+            gameData.flush();
+            gameData.close();
+
+            saveFile.flush();
+            saveFile.close();
+
+            System.out.println("Save done!");  //Colocar no lugar da tela do menu de saída
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void loadOption(){
+            
+        try{
+            FileInputStream loadFile = new FileInputStream("/NetBeansProject/tetris-project-master/src/save.dat");
+
+            ObjectInputStream objReader = new ObjectInputStream(loadFile);
+
+            objReader.readObject()
+            //System.out.println(objReader.readObject());
+
+            objReader.close();
+            loadFile.close();
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+            
+
+    }
+
+
     @Override
     public void keyPressed(KeyEvent e) {
         if(!isPaused){
@@ -197,6 +243,7 @@ public class GameState extends State{
                             Screen.getFrame().addKeyListener(State.getState());
                             break;
                         case 1://selecting save
+                            saveOption(this);
                             //save implementation
                             break;
                         //if selecting resume button
