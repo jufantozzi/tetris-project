@@ -244,6 +244,7 @@ public class GameState extends State implements Serializable {
                             break;
                         case 1://selecting save
                             saveOption(this);
+                            //save implementation
                             break;
                         //if selecting resume button
                         case 2:
