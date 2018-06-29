@@ -22,16 +22,19 @@ import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.Random;
+import java.util.Serializable;
 import maps.GameMap2;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 
 
 /**
  *
  * @author ju
  */
-public class GameState extends State{
+public class GameState extends State implements Serializable {
 
-    private boolean pauseOption, isPaused;
+    private boolean isPaused;
     static double ticks, gameSpeed;
     public Element curPiece, nextPiece;
     public static GameMap1 map1;
@@ -39,13 +42,12 @@ public class GameState extends State{
     private Graphics g;
     Random rand = new Random();
     public static long score;
-    private int mapSelect;
+    private int pauseOption, mapSelect;
     
     public GameState(Graphics g, int mapSelect){
         this.curPiece = this.getRandPiece(rand.nextInt(7));
         this.nextPiece = this.getRandPiece(rand.nextInt(7));
-        this.pauseOption = false;
-        this.isPaused = false;
+        this.pauseOption = 0;
         this.mapSelect = mapSelect;
         this.g = g;
         gameSpeed = 1;
@@ -66,7 +68,11 @@ public class GameState extends State{
                         map1.updateMap(curPiece);                       //generate a new piece
                         map1.checkLineCompletion();
                         curPiece = nextPiece; 
-                        nextPiece = this.getRandPiece(rand.nextInt(7)); 
+                        if(!GameMap1.isValid(curPiece)){
+                            
+                        }
+                        nextPiece = this.getRandPiece(rand.nextInt(7));
+                        
                     }
                 }
                 else if(mapSelect == 1){
@@ -100,37 +106,26 @@ public class GameState extends State{
     }
     
     private void drawPauseScreen(Graphics g){
-        if(!pauseOption){
-            g.drawImage(Assets.pauseScreenR, 200, 250, 200, 200, null);
+        if(pauseOption==0){
+            g.drawImage(Assets.pauseScreenQ, 50, 250, 400, 200, null);
+        }
+        else if(pauseOption == 1){
+            g.drawImage(Assets.pauseScreenS, 50, 250, 400, 200, null);
         }
         else{
-            g.drawImage(Assets.pauseScreenQ, 200, 250, 200, 200, null);
+            g.drawImage(Assets.pauseScreenR, 50, 250, 400, 200, null);
         }
     }
     
     private void drawBackScreen(Graphics g){
-        BufferedImage backgroundImage, topScreen = Assets.topScreen;
-        
-        g.drawImage(topScreen, 0, 0, 400, 100, null);
-        
-        backgroundImage = Assets.backgroundPiece;
-        //draws background static pieces
-        for(int i = 0; i < (Constants.screenW/Constants.cellSize) - Constants.sideOffset; i++){
-            
-            for(int j = Constants.downOffset; j < Constants.screenH/Constants.cellSize; j++){ //j = 3, backgrounscreen starts 3 tiles down
-               
-                g.drawImage(backgroundImage, i * Constants.cellSize, j * Constants.cellSize,
-                        Constants.cellSize, Constants.cellSize, null);
-            } 
-        }
-        //draws background static pieces       
+        g.drawImage(Assets.backgroundPiece, 0, 0, null);
     }   
     
     private void drawNextPiece(Element element, Graphics g){
         for(int i=0;i<4;i++){
             for(int j=0;j<4;j++){
                 if(element.m[element.getRotationPos()][i][j]){
-                    g.drawImage(element.getImage(), (Constants.cellSize-10)*(15+i), (Constants.cellSize-10)*(15+j),
+                    g.drawImage(element.getImage(), (Constants.cellSize-10)*(16+i)-7, (Constants.cellSize-10)*(23+j)+5,
                             Constants.cellSize-10 ,Constants.cellSize-10 , null);
                 }
             }
@@ -138,16 +133,14 @@ public class GameState extends State{
     }
     
     private void drawScore(Graphics g) {
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
-        g.drawString("Score:", Constants.cellSize * 10 + 10, 270);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 30));
-        g.drawString(String.valueOf(score), Constants.cellSize * 11 + 10, 300);
+        g.drawString(String.valueOf(score), Constants.cellSize * 11, 485);
     }
     
     public static void setTick(int i){
         ticks=i;
     }
-    
+
     private Element getRandPiece(int n){
         switch(n){
             case 0: return new PieceI();
@@ -161,6 +154,49 @@ public class GameState extends State{
         }
     }
     
+
+    public void saveOption(GameMap gm){
+
+        try{
+            FileOutputStream saveFile = new FileOutputStream("/NetBeansProject/tetris-project-master/src/save.dat");
+
+            ObjectOutputStream gameData = new ObjectOutputStream(saveFile);
+
+            gameData.writeObject(GameState);
+            gameData.flush();
+            gameData.close();
+
+            saveFile.flush();
+            saveFile.close();
+
+            System.out.println("Save done!");  //Colocar no lugar da tela do menu de saída
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void loadOption(){
+            
+        try{
+            FileInputStream loadFile = new FileInputStream("/NetBeansProject/tetris-project-master/src/save.dat");
+
+            ObjectInputStream objReader = new ObjectInputStream(loadFile);
+
+            objReader.readObject()
+            //System.out.println(objReader.readObject());
+
+            objReader.close();
+            loadFile.close();
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+            
+
+    }
+
+
     @Override
     public void keyPressed(KeyEvent e) {
         if(!isPaused){
@@ -178,6 +214,7 @@ public class GameState extends State{
                     curPiece.moveRight(curPiece, mapSelect);
                     break;  
                 case KeyEvent.VK_ESCAPE:
+                    this.pauseOption = 0;
                     isPaused = true;
                     break;
                 case KeyEvent.VK_SPACE:
@@ -189,23 +226,32 @@ public class GameState extends State{
         }
         else{
             switch (e.getKeyCode()) {
-                case KeyEvent.VK_UP:
-                    this.pauseOption = !this.pauseOption;
+                case KeyEvent.VK_RIGHT:
+                    this.pauseOption++;
+                    if(pauseOption == 3) pauseOption = 0;
                     break;
-                case KeyEvent.VK_DOWN:
-                    this.pauseOption = !this.pauseOption;
+                case KeyEvent.VK_LEFT:
+                    this.pauseOption--;
+                    if(pauseOption == -1) pauseOption = 2;
                     break;
                 case KeyEvent.VK_ENTER:
-                    if(pauseOption) { //if selecting quit game
-                        Screen.removeListener(State.getState());
-                        State.setState(new MenuState(g));
-                        Screen.getFrame().addKeyListener(State.getState());
-                    }
-                    else{//if selecting resume button
-                        this.isPaused = false;
-                    } 
+                    switch (pauseOption) {
+                        case 0:
+                            //if selecting quit game
+                            Screen.removeListener(State.getState());
+                            State.setState(new MenuState(g));
+                            Screen.getFrame().addKeyListener(State.getState());
+                            break;
+                        case 1://selecting save
+                            saveOption(this);
+                            break;
+                        //if selecting resume button
+                        case 2:
+                            this.isPaused = false;
+                            break;
+            }
                         
-                    break;      
+                    break;            
                 case KeyEvent.VK_ESCAPE:
                     isPaused = false;
                     break;

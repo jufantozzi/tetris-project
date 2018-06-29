@@ -36,7 +36,7 @@ public abstract class Element{
                 
                 if(m[rotationPos][i][j]){
                 
-                    g.drawImage(image, ((i + this.xPos) * Constants.cellSize) + 2, ((j + this.yPos + Constants.downOffset)* Constants.cellSize)+1,
+                    g.drawImage(image, ((i + this.xPos) * Constants.cellSize) , ((j + this.yPos + Constants.downOffset)* Constants.cellSize),
                             Constants.cellSize, Constants.cellSize, null);
                 }
             }
