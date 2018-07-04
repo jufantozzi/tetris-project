@@ -15,6 +15,7 @@ import java.awt.image.BufferedImage;
 public class Assets {
     public static BufferedImage backgroundPiece, pieceI,pieceJ, pieceL, pieceO, 
             pieceS, pieceT, pieceZ, topScreen, pauseScreenR, pauseScreenS, pauseScreenQ, //gamestate
+            gameOverS,
             menuScreenStart, menuScreenSelect, menuScreenLoad, menuScreenExit;   //menu
             
     
@@ -35,5 +36,6 @@ public class Assets {
         menuScreenSelect = ImageLoader.loadImage("/menuScreenSelect.png");
         menuScreenLoad = ImageLoader.loadImage("/menuScreenLoad.png");
         menuScreenExit = ImageLoader.loadImage("/menuScreenExit.png");
+        gameOverS = ImageLoader.loadImage("/gameOverS.png");
     }
 }

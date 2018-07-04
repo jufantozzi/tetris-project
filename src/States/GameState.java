@@ -20,12 +20,13 @@ import util.Constants;
 import game.Screen;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
 import java.util.Random;
-import java.util.Serializable;
 import maps.GameMap2;
 import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 
 /**
@@ -43,6 +44,7 @@ public class GameState extends State implements Serializable {
     Random rand = new Random();
     public static long score;
     private int pauseOption, mapSelect;
+    private boolean gameOver;
     
     public GameState(Graphics g, int mapSelect){
         this.curPiece = this.getRandPiece(rand.nextInt(7));
@@ -50,6 +52,7 @@ public class GameState extends State implements Serializable {
         this.pauseOption = 0;
         this.mapSelect = mapSelect;
         this.g = g;
+        this.gameOver = false;
         gameSpeed = 1;
         ticks = 0;
         score = 0;
@@ -60,7 +63,7 @@ public class GameState extends State implements Serializable {
     @Override
     public void tick() {
             gameSpeed = 1 + (score / 1000)* 0.3;
-            if(!isPaused){
+            if(!isPaused & !gameOver){
             ticks++;   //gameSpeed >= 60 at gameSpeed = 1, means it will run 1 time per sec
             if(ticks*gameSpeed >= 60){                              //As gameSpeed grows, game gets faster
                 if(mapSelect == 0){
@@ -69,7 +72,7 @@ public class GameState extends State implements Serializable {
                         map1.checkLineCompletion();
                         curPiece = nextPiece; 
                         if(!GameMap1.isValid(curPiece)){
-                            
+                            gameOver = true;
                         }
                         nextPiece = this.getRandPiece(rand.nextInt(7));
                         
@@ -79,7 +82,10 @@ public class GameState extends State implements Serializable {
                     if(!curPiece.moveDown(curPiece, mapSelect)){                   //if cannot move piece down, draw it on the map
                         map2.updateMap(curPiece);                       //generate a new piece
                         map2.checkLineCompletion();
-                        curPiece = nextPiece; 
+                        curPiece = nextPiece;
+                        if(!GameMap2.isValid(curPiece)){
+                            gameOver = true;
+                        }
                         nextPiece = this.getRandPiece(rand.nextInt(7)); 
                     }
                 }
@@ -102,6 +108,9 @@ public class GameState extends State implements Serializable {
         
         if(isPaused){
             this.drawPauseScreen(g);
+        }
+        if(gameOver){
+            this.drawGameOver(g);
         }
     }
     
@@ -141,6 +150,11 @@ public class GameState extends State implements Serializable {
         ticks=i;
     }
 
+    
+    private void drawGameOver(Graphics g){
+        g.drawImage(Assets.gameOverS, 180, 200, 250, 180, null);
+    }
+    
     private Element getRandPiece(int n){
         switch(n){
             case 0: return new PieceI();
@@ -155,14 +169,14 @@ public class GameState extends State implements Serializable {
     }
     
 
-    public void saveOption(GameMap gm){
+    public void saveOption(GameState g){
 
         try{
-            FileOutputStream saveFile = new FileOutputStream("/NetBeansProject/tetris-project-master/src/save.dat");
+            FileOutputStream saveFile = new FileOutputStream("/home/ju/NetBeansProjects/Game/save.dat");
 
             ObjectOutputStream gameData = new ObjectOutputStream(saveFile);
 
-            gameData.writeObject(GameState);
+            gameData.writeObject(g);
             gameData.flush();
             gameData.close();
 
@@ -179,11 +193,11 @@ public class GameState extends State implements Serializable {
     public static void loadOption(){
             
         try{
-            FileInputStream loadFile = new FileInputStream("/NetBeansProject/tetris-project-master/src/save.dat");
+            FileInputStream loadFile = new FileInputStream("/home/ju/NetBeansProjects/Game/save.dat");
 
             ObjectInputStream objReader = new ObjectInputStream(loadFile);
 
-            objReader.readObject()
+            objReader.readObject();
             //System.out.println(objReader.readObject());
 
             objReader.close();
@@ -199,7 +213,7 @@ public class GameState extends State implements Serializable {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if(!isPaused){
+        if(!isPaused && !gameOver){
             switch (e.getKeyCode()) {
                 case KeyEvent.VK_UP:
                     curPiece.rotate(curPiece, mapSelect);
@@ -235,6 +249,10 @@ public class GameState extends State implements Serializable {
                     if(pauseOption == -1) pauseOption = 2;
                     break;
                 case KeyEvent.VK_ENTER:
+                    if(gameOver) {
+                        State.setState(new GameState(g, this.mapSelect));
+                        gameOver = !gameOver;
+                    }
                     switch (pauseOption) {
                         case 0:
                             //if selecting quit game

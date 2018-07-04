@@ -33,6 +33,7 @@ public class GameMap2 {
     
     public GameMap2(Graphics g) {
         this.g = g;
+        clearMap();
     }
     
     public int[][] getMap() {
@@ -185,5 +186,13 @@ public class GameMap2 {
         map[7][9] = 1;
         map[6][8] = 1;
         map[2][8] = 1;
+    }
+
+    private void clearMap() {
+        for(int i=0;i<10;i++){
+            for(int j=0;j<18;j++){
+                map[i][j] = 0;
+            }
+        }
     }
 }

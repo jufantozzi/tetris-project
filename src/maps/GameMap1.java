@@ -33,6 +33,7 @@ public class GameMap1 {
     
     public GameMap1(Graphics g) {
         this.g = g;
+        clearMap();
     }
     
     public int[][] getMap() {
@@ -188,6 +189,14 @@ public class GameMap1 {
                     g.drawImage(element.getImage(), (Constants.cellSize-10)*(15+i), (Constants.cellSize-10)*(15+j),
                             Constants.cellSize-10 ,Constants.cellSize-10 , null);
                 }
+            }
+        }
+    }
+
+    private void clearMap() {
+        for(int i=0;i<10;i++){
+            for(int j=0;j<18;j++){
+                map[i][j] = 0;
             }
         }
     }
