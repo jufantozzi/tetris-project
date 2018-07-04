@@ -250,7 +250,9 @@ public class GameState extends State implements Serializable {
                     break;
                 case KeyEvent.VK_ENTER:
                     if(gameOver) {
-                        State.setState(new GameState(g, this.mapSelect));
+                        Screen.removeListener(State.getState());
+                        State.setState(new MenuState(g));
+                        Screen.getFrame().addKeyListener(State.getState());
                         gameOver = !gameOver;
                     }
                     switch (pauseOption) {
