@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  * @author ju
  */
 public class Game implements Runnable{
-    //Screen frame
+    //Screen frame - test 1
     public Screen screen;
     private final String title;
     private final int height, width;
